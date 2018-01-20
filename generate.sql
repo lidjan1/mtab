@@ -75,15 +75,9 @@ CREATE TABLE `packages_in_car` (
 
 CREATE TABLE `users` (
  `id` int NOT NULL,
- `Login` varchar(255) NOT NULL,
- `Password` varchar(255) NOT NULL,
- `Email` varchar(255) NOT NULL,
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE `System_users` (
- `id` int NOT NULL,
  `user_type` enum('client','manager','admin', 'courier') NOT NULL,
+ `login` varchar(255) NOT NULL,
+ `password` varchar(255) NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -98,13 +92,13 @@ INSERT INTO cars(Registration_number, Year_of_production, Technical_condition, T
 INSERT INTO clients(id,Name,Surname,Adress, Packages_received) VALUES (8,"Adam","Abacki","Stalowa 17", 3);
 INSERT INTO clients(id,Name,Surname,Adress, Packages_received) VALUES (9,"Bartek","Babacki","Miedziana 33", 3);
 INSERT INTO clients(id,Name,Surname,Adress, Packages_received) VALUES (10,"Czarek","Cabacki","Aluminiowa 24", 3);
-INSERT INTO clients(id,Name,Surname,Adress, Packages_received) VALUES (11,"Dariusz","Dabacki","�elazna 86", 3);
+INSERT INTO clients(id,Name,Surname,Adress, Packages_received) VALUES (11,"Dariusz","Dabacki","Żelazna 86", 3);
 
 INSERT INTO couriers (id, Name,Surname,Salary) VALUES (3,'Kurier1','Kurierowy',2200 );
-INSERT INTO couriers (id, Name,Surname,Salary) VALUES (4,'Kurier2','Dor�czyciel',1700 );
-INSERT INTO couriers (id, Name,Surname,Salary) VALUES (5,'Kurier3','B�yskawica',1950 );
+INSERT INTO couriers (id, Name,Surname,Salary) VALUES (4,'Kurier2','Doręczyciel',1700 );
+INSERT INTO couriers (id, Name,Surname,Salary) VALUES (5,'Kurier3','Błyskawica',1950 );
 
-INSERT INTO managers (id, Name,Surname,Salary) VALUES (6,'Manager1','Zarz�dca',3500 );
+INSERT INTO managers (id, Name,Surname,Salary) VALUES (6,'Manager1','Zarządca',3500 );
 INSERT INTO managers (id, Name,Surname,Salary) VALUES (7,'Manager2','Prezes',1600 );
 
 INSERT INTO package (id, Weight, Value, Size, State) VALUES (1,3.5,53,67,'In magazine');
@@ -113,18 +107,14 @@ INSERT INTO package (id, Weight, Value, Size, State) VALUES (3,80,87,400,'In mag
 INSERT INTO package (id, Weight, Value, Size, State) VALUES (4,9.7,23,97,'In magazine');
 INSERT INTO package (id, Weight, Value, Size, State) VALUES (5,16,68,61,'In magazine');
 
-INSERT INTO users ( id,Login, Password, Email) VALUES (12,'User1','haslo','testmail@test.test');
-INSERT INTO users ( id,Login, Password, Email) VALUES (13,'User2','wd40','zapytaj@test.test');
-INSERT INTO users ( id,Login, Password, Email) VALUES (14,'User3','amarena','zgadnij@test.test');
-
-INSERT INTO system_users( id, user_type ) VALUES (1, 'admin');
-INSERT INTO system_users( id, user_type ) VALUES (2, 'admin');
-INSERT INTO system_users( id, user_type ) VALUES (3, 'courier');
-INSERT INTO system_users( id, user_type ) VALUES (4, 'courier');
-INSERT INTO system_users( id, user_type ) VALUES (5, 'courier');
-INSERT INTO system_users( id, user_type ) VALUES (6, 'manager');
-INSERT INTO system_users( id, user_type ) VALUES (7, 'manager');
-INSERT INTO system_users( id, user_type ) VALUES (8, 'client');
-INSERT INTO system_users( id, user_type ) VALUES (9, 'client');
-INSERT INTO system_users( id, user_type ) VALUES (10, 'client');
-INSERT INTO system_users( id, user_type ) VALUES (11, 'client');
+INSERT INTO users ( id, user_type, login, password) VALUES (1, 'admin', 'Admin1', 'haslo');
+INSERT INTO users ( id, user_type, login, password) VALUES (2, 'admin', 'Admin2', 'wd40');
+INSERT INTO users ( id, user_type, login, password) VALUES (3, 'courier', 'Kurier1','amarena');
+INSERT INTO users ( id, user_type, login, password) VALUES (4, 'courier', 'Kurier2','amarena2');
+INSERT INTO users ( id, user_type, login, password) VALUES (5, 'courier', 'Kurier3','amarena3');
+INSERT INTO users ( id, user_type, login, password) VALUES (6, 'manager', 'Manager1','water1');
+INSERT INTO users ( id, user_type, login, password) VALUES (7, 'manager', 'Manager2','water2');
+INSERT INTO users ( id, user_type, login, password) VALUES (8, 'client', 'User1','clientTest1');
+INSERT INTO users ( id, user_type, login, password) VALUES (9, 'client', 'User2','clientTest2');
+INSERT INTO users ( id, user_type, login, password) VALUES (10, 'client', 'User3','clientTest3');
+INSERT INTO users ( id, user_type, login, password) VALUES (11, 'client', 'User4','clientTest4');

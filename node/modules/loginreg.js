@@ -1,8 +1,19 @@
 var repo = require('./repo');
-var passwordHash = require('./lib/password-hash');
 
 exports.registerUser = function (user, password, callback) {
-    repo.CRUD.readWhere('user', 'login=' + user, function (result) {
+    repo.CRUD.readWhere('system_users', 'login=' + user, function (result) {
+        //TODO sprawdzic czy user jest już w bazie. Dodac biblioteke do hashowania hasel
+    });
+};
+
+exports.registerAdmin = function (user, password, callback) {
+    repo.CRUD.readWhere('system_users', 'login=' + user, function (result) {
+        //TODO sprawdzic czy user jest już w bazie. Dodac biblioteke do hashowania hasel
+    });
+};
+
+exports.registerEmployee = function (user, password, callback) {
+    repo.CRUD.readWhere('system_users', 'login=' + user, function (result) {
         //TODO sprawdzic czy user jest już w bazie. Dodac biblioteke do hashowania hasel
     });
 };

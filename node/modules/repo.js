@@ -1,10 +1,7 @@
-var app = require('http').createServer();
-var io = require('socket.io')(app);
 var MySqlClient = require('mysql');
 
 
 var globalDb = null;
-app.listen(80);
 
 exports.initConnection = function (dbName, callback) {
     var connectionData = {
