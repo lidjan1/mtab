@@ -1,16 +1,86 @@
 CREATE DATABASE bazodanowe
 
-CREATE TABLE administrators;
-CREATE TABLE cars;
-CREATE TABLE clients;
-CREATE TABLE couriers;
-CREATE TABLE couriers_in_work;
-CREATE TABLE managers;
-CREATE TABLE orders;
-CREATE TABLE package;
-CREATE TABLE packages_by_courier;
-CREATE TABLE packages_in_car;
-CREATE TABLE users;
+CREATE TABLE `administrators` (`id` int(12) NOT NULL,
+ `Name` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Surname` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Salary` double NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `cars` (
+ `Registration_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Year_of_production` int(11) NOT NULL,
+ `Technical_condition` enum('good','broken') NOT NULL DEFAULT 'good',
+ `Type` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ PRIMARY KEY (`Registration_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `clients` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `Name` varchar(255) NOT NULL,
+ `Surname` varchar(255) NOT NULL,
+ `Adress` varchar(255) NOT NULL,
+ `Packages_received` int(11) NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1
+
+CREATE TABLE `couriers` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `Name` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Surname` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Salary` double NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1
+
+CREATE TABLE `couriers_in_work` (
+ `registration_number` varchar(255) NOT NULL,
+ `empleyee_id` int(11) NOT NULL,
+ PRIMARY KEY (`registration_number`,`empleyee_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `managers` (
+ `id` int(11) NOT NULL,
+ `Name` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Surname` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Salary` double NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `orders` (
+ `Package_id` int(11) NOT NULL,
+ `Client_id` int(11) NOT NULL,
+ `Courier_id` int(11) NOT NULL,
+ PRIMARY KEY (`Package_id`,`Client_id`,`Courier_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `package` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `Weight` double NOT NULL,
+ `Value` double NOT NULL,
+ `Size` double NOT NULL,
+ `State` enum('in magazine','translate','delivered') NOT NULL DEFAULT 'in magazine',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1
+
+CREATE TABLE `packages_by_courier` (
+ `courier_id` int(11) NOT NULL,
+ `package_id` int(11) NOT NULL,
+ PRIMARY KEY (`courier_id`,`package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `packages_in_car` (
+ `registration_number` varchar(255) NOT NULL,
+ `package_id` int(11) NOT NULL,
+ PRIMARY KEY (`registration_number`,`package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `users` (
+ `Login` varchar(255) NOT NULL,
+ `Password` varchar(255) NOT NULL,
+ `Email` varchar(255) NOT NULL,
+ PRIMARY KEY (`Login`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
 
 INSERT INTO administrators(id,Name, Surname, Salary) VALUES (1,'Admin1', 'Admin1', 1000);
 INSERT INTO administrators(id,Name, Surname, Salary) VALUES (2,'Admin2', 'Admin2', 2000);
