@@ -23,6 +23,7 @@
   "homepage": "https://github.com/lidjan1/mtab",
   "devDependencies": {
     "mysql": "^2.15.0",
+    "password-hash": "^1.2.2",
     "socket.io": "^2.0.4"
   }
 }

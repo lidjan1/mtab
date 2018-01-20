@@ -84,6 +84,19 @@ exports.CRUD = {
             }
         });
     },
+    readWhere: function (table, where, callback) {
+        if (globalDb === null) console.log("You are not connected to any database!");
+
+        var sql = 'SELECT * FROM ' + table + ' WHERE ' + where;
+        globalDb.query(sql, function (err, result, fields) {
+            if(err){
+                console.log('error while reading data');
+                if(callback) callback(err);
+            } else {
+                callback(result);
+            }
+        });
+    },
     updateWhere: function (table, set, where, callback) {
         if (globalDb === null) console.log("You are not connected to any database!");
         var sql = 'UPDATE ' + table + ' SET ' + set + ' WHERE ' + where;
