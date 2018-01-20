@@ -63,8 +63,8 @@ exports.CRUD = {
                 console.log('error while creating data');
                 if(callback) callback('Error');
             } else {
-                if(callback) callback('OK');
-                console.log("Data inserted to DB");
+                if(callback) callback('Data inserted to DB');
+                //console.log("Data inserted to DB");
             }
         });
     },
@@ -87,7 +87,7 @@ exports.CRUD = {
         var sql = 'SELECT * FROM ' + table + ' WHERE ' + where;
         globalDb.query(sql, function (err, result, fields) {
             if(err){
-                console.log('error while reading data');
+                //console.log('error while reading data!', err);
                 if(callback) callback(err);
             } else {
                 callback(result);
