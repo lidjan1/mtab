@@ -61,6 +61,26 @@ repo.initConnection('db', function () {
                 });
             }
         });
+        socket.on('editCar', function (response) {
+            if(userType !== 'admin'){
+                socket.emit('adminGetData', 'You are not logged in as administrator!');
+            } else {
+                console.log('Editing car...', response);
+                var setQuery = 'Registration_number =' + '\'' + response.Registration_number + '\', ' +
+                               'Year_of_production =' + '\'' + response.Year_of_production + '\', ' +
+                               'Technical_condition =' + '\'' + response.Technical_condition + '\', ' +
+                               'Type =' + '\'' + response.Type + '\'';
+
+                var whereQuery = 'Registration_number =' + '\'' + response.Old_Reg + '\'';
+                    repo.CRUD.updateWhere('cars', setQuery, whereQuery, function (dbResponse) {
+                    var dataObj = {
+                        response: dbResponse,
+                        car: response
+                    };
+                    socket.emit('editCar', dataObj);
+                });
+            }
+        });
         socket.on('adminGetData', function () {
             if(userType !== 'admin'){
                 socket.emit('adminGetData', 'You are not logged in as administrator!');

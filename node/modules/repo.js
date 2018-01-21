@@ -100,9 +100,9 @@ exports.CRUD = {
         globalDb.query(sql, function (err, result, fields) {
             if(err){
                 console.log('error while reading data');
-                if(callback) callback(err);
+                if(callback) callback(false);
             } else {
-                callback(result);
+                callback(true);
             }
         });
     },

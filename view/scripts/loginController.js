@@ -8,7 +8,8 @@ app.controller('loginController', function($scope, $location, $window, loginServ
         document.getElementById('login').value = '';
         document.getElementById('pwd').value = '';
     };
-    socket.on('login', function (result) {
+
+    loginService.loginSubscribe(function (result) {
         if(result){
             console.log(result);
             switch(result.user_type){
@@ -28,7 +29,7 @@ app.controller('loginController', function($scope, $location, $window, loginServ
                     break;
             }
         } else {
-            alert('błędne logowanie, sprawdź login i hasło');
+            alert('błędne logowanie, sprawdź login i hasło!');
         }
     });
 });

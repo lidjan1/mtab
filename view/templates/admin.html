@@ -90,7 +90,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr style="cursor:pointer;" ng-repeat="car in adminData.carsData">
+                <tr style="cursor:pointer;" ng-repeat="car in adminData.carsData" data-ng-click="prepareModalEditCar(car)" data-toggle="modal" data-target="#editCar">
                     <th scope="row">{{car.Registration_number}}</th>
                     <td>{{car.Year_of_production}}</td>
                     <td>{{car.Technical_condition}}</td>
@@ -99,6 +99,42 @@
                 </tbody>
             </table>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewCar">Dodaj nowy pojazd</button>
+            <div class="modal fade" id="editCar" tabindex="-1" role="dialog" aria-labelledby="exampleEditCarModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleEditCarModalLabel">Edycja pojazdu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="editCarReg">Tablice rejestracyjne:</label>
+                                <input type="text" class="form-control" id="editCarReg" placeholder="np. WA 23521">
+                            </div>
+                            <div class="form-group">
+                                <label for="editCarYear">Rok produkcji:</label>
+                                <input type="text" class="form-control" id="editCarYear" placeholder="np. 2005">
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" id="editCarCondition">
+                                    <option selected>good</option>
+                                    <option>broken</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCarType">Typ:</label>
+                                <input type="text" class="form-control" id="editCarType" placeholder="np. Ford">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="editCar()">Edytuj</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="addNewCar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

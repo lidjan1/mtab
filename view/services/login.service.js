@@ -3,8 +3,13 @@ app.service('loginService', function() {
         console.log(user, password);
         socket.emit('login', {user: user, password: password});
     };
-
+    var loginSubscribe = function (callback) {
+        socket.on('login', function (result) {
+            callback(result);
+        });
+    };
     return {
-        login: login
+        login: login,
+        loginSubscribe: loginSubscribe
     };
 });

@@ -32,22 +32,13 @@ app.controller('adminController', function($scope, adminService) {
                 break;
         }
     };
-    socket.on('adminGetData', function (result) {
-        $scope.adminData = result;
-        $scope.$apply();
-    });
-    socket.on('addNewCar', function (result) {
-        if(result.response){
-            $scope.adminData.carsData.push(result.car);
-            $scope.$apply();
-        }
-    });
     $scope.newCar = {
         newCarReg: '',
         newCarYear: '',
         newCarCondition: 'good',
         newCarType: ''
     };
+    $scope.oldRegForCarEdit = '';
     $scope.addNewCar = function () {
         adminService.addNewCar($scope.newCar);
         document.getElementById('addNewCarReg').value = '';
@@ -55,4 +46,48 @@ app.controller('adminController', function($scope, adminService) {
         document.getElementById('addNewCarCondition').value = 'Dobry';
         document.getElementById('addNewCarType').value = '';
     };
+    $scope.prepareModalEditCar = function (car) {
+        console.log(car);
+        $scope.oldRegForCarEdit = car.Registration_number;
+        document.getElementById('editCarReg').value = car.Registration_number;
+        document.getElementById('editCarYear').value = car.Year_of_production;
+        document.getElementById('editCarCondition').value = car.Technical_condition;
+        document.getElementById('editCarType').value = car.Type;
+    };
+    $scope.editCar = function () {
+        var reg = document.getElementById('editCarReg').value;
+        var year = document.getElementById('editCarYear').value;
+        var con = document.getElementById('editCarCondition').value;
+        var type = document.getElementById('editCarType').value;
+        var car = {
+            Registration_number: reg,
+            Year_of_production: year,
+            Technical_condition: con,
+            Type: type,
+            Old_Reg: $scope.oldRegForCarEdit
+        };
+        adminService.editCar(car);
+    };
+    adminService.subscribeOnAdminGetData(function (result) {
+        $scope.adminData = result;
+        $scope.$apply();
+    });
+    adminService.subscribeOnAddNewCar(function (result) {
+        if(result.response){
+            $scope.adminData.carsData.push(result.car);
+            $scope.$apply();
+        }
+    });
+    adminService.subscribeOnEditCar(function (result) {
+        if(result.response){
+            for(var i = 0;i<$scope.adminData.carsData.length;i++){
+                if($scope.adminData.carsData[i].Registration_number === result.car.Old_Reg){
+                    delete result.car.Old_Reg;
+                    $scope.adminData.carsData[i] = result.car;
+                    break;
+                }
+            }
+            $scope.$apply();
+        }
+    });
 });
