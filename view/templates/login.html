@@ -1,11 +1,13 @@
-<div class="container">
+<div class="container" ng-controller="loginController">
+    <form data-ng-submit="login()">
     <div class="form-group">
-        <label for="email">Login:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter login" name="email">
+        <label for="login">Login:</label>
+        <input type="text" class="form-control" id="login" placeholder="Enter login" name="login" ng-model="user">
     </div>
     <div class="form-group">
         <label for="pwd">Password:</label>
-        <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+        <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" ng-model="password">
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">Login</button>
+    </form>
 </div>
