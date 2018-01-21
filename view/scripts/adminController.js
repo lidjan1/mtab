@@ -1,4 +1,4 @@
-app.controller('adminController', function($scope) {
+app.controller('adminController', function($scope, adminService) {
     $scope.adminData = {};
     $scope.usersLayout = true;
     $scope.carsLayout = false;
@@ -36,4 +36,23 @@ app.controller('adminController', function($scope) {
         $scope.adminData = result;
         $scope.$apply();
     });
+    socket.on('addNewCar', function (result) {
+        if(result.response){
+            $scope.adminData.carsData.push(result.car);
+            $scope.$apply();
+        }
+    });
+    $scope.newCar = {
+        newCarReg: '',
+        newCarYear: '',
+        newCarCondition: 'good',
+        newCarType: ''
+    };
+    $scope.addNewCar = function () {
+        adminService.addNewCar($scope.newCar);
+        document.getElementById('addNewCarReg').value = '';
+        document.getElementById('addNewCarYear').value = '';
+        document.getElementById('addNewCarCondition').value = 'Dobry';
+        document.getElementById('addNewCarType').value = '';
+    };
 });

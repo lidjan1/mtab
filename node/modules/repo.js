@@ -60,10 +60,10 @@ exports.CRUD = {
         var sql = 'INSERT INTO' + ' ' + table + ' ' + firstStr + ' VALUES ' + secondStr;
         globalDb.query(sql, function (err, result) {
             if(err){
-                console.log('error while creating data');
-                if(callback) callback('Error');
+                console.log('error while creating data', err);
+                if(callback) callback(false);
             } else {
-                if(callback) callback('Data inserted to DB');
+                if(callback) callback(true);
                 //console.log("Data inserted to DB");
             }
         });
