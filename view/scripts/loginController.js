@@ -1,4 +1,4 @@
-app.controller('loginController', function($scope, loginService) {
+app.controller('loginController', function($scope, $location, $window, loginService) {
     $scope.user = '';
     $scope.password = '';
     $scope.login  = function () {
@@ -13,16 +13,18 @@ app.controller('loginController', function($scope, loginService) {
             console.log(result);
             switch(result.user_type){
                 case 'admin':
-                    console.log('Zalogowano jako admin!');
                     socket.emit('adminGetData');
+                    var currentUrl = $location.absUrl();
+                    location.href = (currentUrl + 'admin');
                     break;
                 case 'client':
-                    console.log('Zalogowano jako client!');
-                    socket.emit('adminGetData');
+                    //socket.emit('adminGetData');
                     break;
                 case 'courier':
+                    //socket.emit('adminGetData');
                     break;
                 case 'manager':
+                    //socket.emit('adminGetData');
                     break;
             }
         } else {

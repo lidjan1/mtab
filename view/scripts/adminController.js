@@ -33,7 +33,7 @@ app.controller('adminController', function($scope) {
         }
     };
     socket.on('adminGetData', function (result) {
-        console.log(result);
         $scope.adminData = result;
+        $scope.$apply();
     });
 });

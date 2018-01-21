@@ -18,7 +18,7 @@ CREATE TABLE `clients` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `Name` varchar(255) NOT NULL,
  `Surname` varchar(255) NOT NULL,
- `Adress` varchar(255) NOT NULL,
+ `Adress` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  `Packages_received` int(11) NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
