@@ -41,6 +41,22 @@ exports.adminHandlers = function (socket, userType) {
             });
         }
     });
+    socket.on('deleteCar', function (response) {
+        if(userType !== 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            console.log('Deleting car...', response);
+            var whereQuery = 'Registration_number =' + '\'' + response + '\'';
+
+            repo.CRUD.deleteWhere('cars', whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    Old_Reg: response
+                };
+                socket.emit('deleteCar', dataObj);
+            });
+        }
+    });
     socket.on('adminGetData', function () {
         if(userType !== 'admin'){
             socket.emit('adminGetData', 'You are not logged in as administrator!');

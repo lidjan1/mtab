@@ -68,6 +68,10 @@ app.controller('adminController', function($scope, adminService) {
         };
         adminService.editCar(car);
     };
+    $scope.deleteCar = function () {
+        var reg = document.getElementById('editCarReg').value;
+        adminService.deleteCar(reg);
+    };
     adminService.subscribeOnAdminGetData(function (result) {
         $scope.adminData = result;
         $scope.$apply();
@@ -87,6 +91,18 @@ app.controller('adminController', function($scope, adminService) {
                     break;
                 }
             }
+            $scope.$apply();
+        }
+    });
+    adminService.subscribeOnDeleteCar(function (result) {
+        if(result.response){
+            for(var i = 0;i<$scope.adminData.carsData.length;i++){
+                if($scope.adminData.carsData[i].Registration_number === result.Old_Reg){
+                    $scope.adminData.carsData.splice(i, 1);
+                    break;
+                }
+            }
+            console.log($scope.adminData.carsData);
             $scope.$apply();
         }
     });
