@@ -3,6 +3,7 @@ var repo = require('./modules/repo');
 var loginModule = require('./modules/loginreg');
 var io = require('socket.io')(app);
 var adminModule = require('./modules/adminModule');
+var clientModule = require('./modules/clientModule');
 
 app.listen(81);
 
@@ -15,6 +16,7 @@ repo.initConnection('db', function () {
                  if(response){
                      var table;
                      userType = response.user_type;
+                     console.log(response.user_type);
                      switch (response.user_type){
                          case 'admin':
                              table = 'administrators';
@@ -22,6 +24,7 @@ repo.initConnection('db', function () {
                              break;
                          case 'client':
                              table = 'clients';
+                             clientModule.clientHandlers(socket, userType, response.id);
                              break;
                          case 'courier':
                              table = 'couriers';

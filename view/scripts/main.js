@@ -14,7 +14,7 @@ app.config(function($routeProvider) {
         .when("/manager", {
             templateUrl : "templates/manager.html"
         })
-        .when("/user", {
-            templateUrl : "templates/user.html"
+        .when("/client", {
+            templateUrl : "templates/client.html"
         });
 });

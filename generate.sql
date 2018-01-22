@@ -48,8 +48,8 @@ CREATE TABLE `managers` (
 CREATE TABLE `orders` (
  `Package_id` int(11) NOT NULL,
  `Client_id` int(11) NOT NULL,
- `Courier_id` int(11) NOT NULL,
- PRIMARY KEY (`Package_id`,`Client_id`,`Courier_id`)
+ `Courier_id` int(11),
+ PRIMARY KEY (`Package_id`,`Client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `package` (
@@ -57,7 +57,7 @@ CREATE TABLE `package` (
  `Weight` double NOT NULL,
  `Value` double NOT NULL,
  `Size` double NOT NULL,
- `State` enum('in magazine','translate','delivered') NOT NULL DEFAULT 'in magazine',
+ `State` enum('in magazine','waiting for courier','delivered') NOT NULL DEFAULT 'waiting for courier',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
@@ -104,8 +104,7 @@ INSERT INTO managers (id, Name,Surname,Salary) VALUES (7,'Manager2','Prezes',160
 INSERT INTO package (id, Weight, Value, Size, State) VALUES (1,3.5,53,67,'In magazine');
 INSERT INTO package (id, Weight, Value, Size, State) VALUES (2,5,100,42,'In magazine');
 INSERT INTO package (id, Weight, Value, Size, State) VALUES (3,80,87,400,'In magazine');
-INSERT INTO package (id, Weight, Value, Size, State) VALUES (4,9.7,23,97,'In magazine');
-INSERT INTO package (id, Weight, Value, Size, State) VALUES (5,16,68,61,'In magazine');
+INSERT INTO package (id, Weight, Value, Size, State) VALUES (4,2,3000,50,'In magazine');
 
 INSERT INTO users ( id, user_type, login, password) VALUES (1, 'admin', 'Admin1', 'haslo');
 INSERT INTO users ( id, user_type, login, password) VALUES (2, 'admin', 'Admin2', 'wd40');
@@ -114,7 +113,12 @@ INSERT INTO users ( id, user_type, login, password) VALUES (4, 'courier', 'Kurie
 INSERT INTO users ( id, user_type, login, password) VALUES (5, 'courier', 'Kurier3','amarena3');
 INSERT INTO users ( id, user_type, login, password) VALUES (6, 'manager', 'Manager1','water1');
 INSERT INTO users ( id, user_type, login, password) VALUES (7, 'manager', 'Manager2','water2');
-INSERT INTO users ( id, user_type, login, password) VALUES (8, 'client', 'User1','clientTest1');
+INSERT INTO users ( id, user_type, login, password) VALUES (8, 'client', 'User1','abc1');
 INSERT INTO users ( id, user_type, login, password) VALUES (9, 'client', 'User2','clientTest2');
 INSERT INTO users ( id, user_type, login, password) VALUES (10, 'client', 'User3','clientTest3');
 INSERT INTO users ( id, user_type, login, password) VALUES (11, 'client', 'User4','clientTest4');
+
+INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (1, 8, 3);
+INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (2, 8, 4);
+INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (3, 9, 5);
+INSERT INTO orders (Package_id, Client_id) VALUES (4, 10);

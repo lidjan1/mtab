@@ -12,14 +12,17 @@ app.controller('loginController', function($scope, $location, $window, loginServ
     loginService.loginSubscribe(function (result) {
         if(result){
             console.log(result);
+            var currentUrl;
             switch(result.user_type){
                 case 'admin':
                     socket.emit('adminGetData');
-                    var currentUrl = $location.absUrl();
+                    currentUrl = $location.absUrl();
                     location.href = (currentUrl + 'admin');
                     break;
                 case 'client':
-                    //socket.emit('adminGetData');
+                    socket.emit('clientGetData', {id: result.id});
+                    currentUrl = $location.absUrl();
+                    location.href = (currentUrl + 'client');
                     break;
                 case 'courier':
                     //socket.emit('adminGetData');

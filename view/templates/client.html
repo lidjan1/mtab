@@ -1,0 +1,129 @@
+<div ng-controller="clientController">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">Panel klienta</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarClientLayout" aria-controls="navbarClientLayout" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarClientLayout">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="" data-ng-click="setClientLayout('myOrders')">Moje przesyłki</a>
+                <a class="nav-item nav-link" href="" data-ng-click="setClientLayout('addOrder')">Złóż zamówienie</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="display-4">Witaj, {{clientData.userData.Name}} {{clientData.userData.Surname}}!</h1>
+        <div id="clientMyOrders" ng-if="layoutMyOrders" class="jumbotron">
+            <h3>Moje przesyłki</h3>
+            <table class="table table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Waga</th>
+                    <th scope="col">Cena</th>
+                    <th scope="col">Rozmiar</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="cursor:pointer;" ng-repeat="package in clientData.packageData" data-ng-click="" data-toggle="modal" data-target="">
+                    <th scope="row">{{package.Weight}}</th>
+                    <td>{{package.Value}}</td>
+                    <td>{{package.Size}}</td>
+                    <td>{{package.State}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="clientAddOrder" ng-if="layoutAddOrder" class="jumbotron">
+            <h3>Nowe zamówienie, podaj dane paczki!</h3>
+            <form data-ng-submit="addNewOrder()">
+                <div class="form-group">
+                    <label for="clientAddOrderWeight">Waga paczki (kg)</label>
+                    <input type="number" class="form-control" id="clientAddOrderWeight" placeholder="Na przykład 2.5" ng-change="recalculatePackageValue()" ng-model="package.Weight">
+                </div>
+                <div class="form-group">
+                    <label for="clientAddOrderSize">Rozmiar paczki (w cm^3)</label>
+                    <input type="number" class="form-control" id="clientAddOrderSize" placeholder="Na przykład 10cmx10cmx10cm - 1000" ng-change="recalculatePackageValue()" ng-model="package.Size">
+                </div>
+                <p>Wyliczona cena przesyłki: {{package.Value}}zł</p>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+            <!--<div class="modal fade" id="editCar" tabindex="-1" role="dialog" aria-labelledby="exampleEditCarModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleEditCarModalLabel">Edycja pojazdu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="editCarReg">Tablice rejestracyjne:</label>
+                                <input type="text" class="form-control" id="editCarReg" placeholder="np. WA 23521">
+                            </div>
+                            <div class="form-group">
+                                <label for="editCarYear">Rok produkcji:</label>
+                                <input type="text" class="form-control" id="editCarYear" placeholder="np. 2005">
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" id="editCarCondition">
+                                    <option selected>good</option>
+                                    <option>broken</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCarType">Typ:</label>
+                                <input type="text" class="form-control" id="editCarType" placeholder="np. Ford">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="editCar()">Edytuj</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" data-ng-click="deleteCar()">Usuń</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="addNewCar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Dodawanie nowego pojazdu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="addNewCarReg">Tablice rejestracyjne:</label>
+                                <input type="text" class="form-control" id="addNewCarReg" placeholder="np. WA 23521" ng-model="newCar.newCarReg">
+                            </div>
+                            <div class="form-group">
+                                <label for="addNewCarYear">Rok produkcji:</label>
+                                <input type="text" class="form-control" id="addNewCarYear" placeholder="np. 2005" ng-model="newCar.newCarYear">
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" id="addNewCarCondition" ng-model="newCar.newCarCondition">
+                                    <option selected>good</option>
+                                    <option>broken</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="addNewCarType">Typ:</label>
+                                <input type="text" class="form-control" id="addNewCarType" placeholder="np. Ford" ng-model="newCar.newCarType">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="addNewCar()">Dodaj</button>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+    </div>
+</div>
