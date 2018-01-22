@@ -4,6 +4,7 @@ var loginModule = require('./modules/loginreg');
 var io = require('socket.io')(app);
 var adminModule = require('./modules/adminModule');
 var clientModule = require('./modules/clientModule');
+var courierModule = require('./modules/courierModule');
 
 app.listen(81);
 
@@ -28,6 +29,7 @@ repo.initConnection('db', function () {
                              break;
                          case 'courier':
                              table = 'couriers';
+                             courierModule.courierHandlers(socket, userType, response.id);
                              break;
                          case 'manager':
                              table = 'managers';

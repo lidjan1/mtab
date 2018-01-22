@@ -25,7 +25,9 @@ app.controller('loginController', function($scope, $location, $window, loginServ
                     location.href = (currentUrl + 'client');
                     break;
                 case 'courier':
-                    //socket.emit('adminGetData');
+                    socket.emit('courierGetData', {id: result.id});
+                    currentUrl = $location.absUrl();
+                    location.href = (currentUrl + 'courier');
                     break;
                 case 'manager':
                     //socket.emit('adminGetData');

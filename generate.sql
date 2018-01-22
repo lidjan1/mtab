@@ -119,6 +119,6 @@ INSERT INTO users ( id, user_type, login, password) VALUES (10, 'client', 'User3
 INSERT INTO users ( id, user_type, login, password) VALUES (11, 'client', 'User4','clientTest4');
 
 INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (1, 8, 3);
-INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (2, 8, 4);
-INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (3, 9, 5);
+INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (2, 8, 3);
+INSERT INTO orders (Package_id, Client_id, Courier_id) VALUES (3, 9, 3);
 INSERT INTO orders (Package_id, Client_id) VALUES (4, 10);

@@ -1,0 +1,41 @@
+<div ng-controller="courierController">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">Panel kuriera</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCourierLayout" aria-controls="navbarCourierLayout" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCourierLayout">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active">Moje przesyłki</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="display-4">Witaj, {{courierData.userData.Name}} {{courierData.userData.Surname}}!</h1>
+        <div id="courierMyPackages" class="jumbotron">
+            <h3>Przesyłki do dostarczenia</h3>
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Waga</th>
+                    <th scope="col">Cena</th>
+                    <th scope="col">Rozmiar</th>
+                    <th scope="col">Adres</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="package in courierData.packageData" data-ng-click="" data-toggle="modal" data-target="">
+                    <th scope="row">{{package.Weight}}</th>
+                    <td>{{package.Value}}</td>
+                    <td>{{package.Size}}</td>
+                    <td>{{package.Adress}}</td>
+                    <td>{{package.State}}</td>
+                    <td><button class="btn btn-primary">Zmień status</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
