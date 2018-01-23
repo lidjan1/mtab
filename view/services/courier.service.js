@@ -4,8 +4,21 @@ app.service('courierService', function() {
             callback(result);
         });
     };
+    var subscribeOnCourierEditState = function (callback) {
+        socket.on('editState', function (result) {
+            console.log(result);
+            callback(result);
+        });
+    };
+
+    var editState = function (data) {
+        console.log(data);
+        socket.emit('editState', data);
+    };
 
     return {
         subscribeOnCourierGetData: subscribeOnCourierGetData,
+        subscribeOnCourierEditState: subscribeOnCourierEditState,
+        editState: editState
     };
 });
