@@ -57,7 +57,8 @@ CREATE TABLE `package` (
  `Value` double NOT NULL,
  `Size` double NOT NULL,
  `State` enum( 'taken_from_client','in magazine','waiting for courier', 'in_delivery' ,'delivered' ) NOT NULL DEFAULT 'waiting for courier',
- `Delivery_Adress` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Delivery_Address` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+ `Delivery_Person` varchar(255) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
@@ -101,10 +102,10 @@ INSERT INTO couriers (id, Name,Surname) VALUES (5,'Kurier3','Błyskawica');
 INSERT INTO managers (id, Name,Surname) VALUES (6,'Manager1','Zarządca');
 INSERT INTO managers (id, Name,Surname) VALUES (7,'Manager2','Prezes');
 
-INSERT INTO package (id, Weight, Value, Size, State, Delivery_Adress) VALUES (1,3.5,53,67,'In magazine' , 'Zielona 12');
-INSERT INTO package (id, Weight, Value, Size, State, Delivery_Adress) VALUES (2,5,100,42,'In magazine' , 'Czerwona 30');
-INSERT INTO package (id, Weight, Value, Size, State, Delivery_Adress) VALUES (3,80,87,400,'In magazine', 'Szara 4');
-INSERT INTO package (id, Weight, Value, Size, State, Delivery_Adress) VALUES (4,2,3000,50,'In magazine', 'Tęczowa 31');
+INSERT INTO package (id, Weight, Value, Size, State, Delivery_Address, Delivery_Person) VALUES (1,3.5,53,67,'In magazine' , 'ul. Zielona 12, 02-222 Warszawa', 'Jan Kowalski');
+INSERT INTO package (id, Weight, Value, Size, State, Delivery_Address, Delivery_Person) VALUES (2,5,100,42,'In magazine' , 'ul. Czerwona 30, 01-111 Gdańsk', 'Martin Smith');
+INSERT INTO package (id, Weight, Value, Size, State, Delivery_Address, Delivery_Person) VALUES (3,80,87,400,'In magazine', 'ul. Szara 4, 08-888 Toruń', 'Piotr Nowak');
+INSERT INTO package (id, Weight, Value, Size, State, Delivery_Address, Delivery_Person) VALUES (4,2,3000,50,'In magazine', 'ul. Tęczowa 31, 03-333 Wrocław', 'Krzysztof Turek');
 
 INSERT INTO users ( id, user_type, login, password) VALUES (1, 'admin', 'Admin1', 'haslo');
 INSERT INTO users ( id, user_type, login, password) VALUES (2, 'admin', 'Admin2', 'wd40');
