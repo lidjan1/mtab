@@ -23,6 +23,8 @@
                     <th scope="col">Cena</th>
                     <th scope="col">Rozmiar</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Adres odbiorcy</th>
+                    <th scope="col">Dane odbiorcy</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +33,8 @@
                     <td>{{package.Value}}</td>
                     <td>{{package.Size}}</td>
                     <td>{{package.State}}</td>
+                    <td>{{package.Delivery_Address}}</td>
+                    <td>{{package.Delivery_Person}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -39,6 +43,14 @@
         <div id="clientAddOrder" ng-if="layoutAddOrder" class="jumbotron">
             <h3>Nowe zamówienie, podaj dane paczki!</h3>
             <form data-ng-submit="addNewOrder()">
+                <div class="form-group">
+                    <label for="clientAddOrderPerson">Dane odbiorcy (imię i nazwisko)</label>
+                    <input type="text" class="form-control" id="clientAddOrderPerson" placeholder="Na przykład Jan Kowalski" ng-model="package.Delivery_Person">
+                </div>
+                <div class="form-group">
+                    <label for="clientAddOrderAddress">Adres odbiorcy (wymagana ulica, miasto i kod pocztowy)</label>
+                    <input type="text" class="form-control" id="clientAddOrderAddress" placeholder="Na przykład ul. Wiejska 11, 02-222 Warszawa" ng-model="package.Delivery_Address">
+                </div>
                 <div class="form-group">
                     <label for="clientAddOrderWeight">Waga paczki (kg)</label>
                     <input type="number" class="form-control" id="clientAddOrderWeight" placeholder="Na przykład 2.5" ng-change="recalculatePackageValue()" ng-model="package.Weight">

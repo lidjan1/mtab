@@ -46,7 +46,9 @@ exports.clientHandlers = function (socket, userType, userID) {
             var packageData = {
                 Weight: response.package.Weight,
                 Value: response.package.Value,
-                Size: response.package.Size
+                Size: response.package.Size,
+                Delivery_Address: response.package.Delivery_Address,
+                Delivery_Person: response.package.Delivery_Person
             };
             repo.CRUD.create('package', packageData, function (dbResponse) {
                 if(dbResponse){

@@ -36,7 +36,9 @@ app.controller('clientController', function($scope, clientService) {
     $scope.addNewOrder = function () {
         clientService.addNewOrder({package: $scope.package, id: $scope.clientData.userData.id});
         document.getElementById('clientAddOrderWeight').value = 0;
-        document.getElementById('clientAddOrderWeight').value = 0;
+        document.getElementById('clientAddOrderSize').value = 0;
+        document.getElementById('clientAddOrderPerson').value = '';
+        document.getElementById('clientAddOrderAddress').value = '';
         $scope.recalculatePackageValue();
     };
 
