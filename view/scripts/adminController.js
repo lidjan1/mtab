@@ -44,7 +44,7 @@ app.controller('adminController', function($scope, adminService) {
         newPackageSize: '',
         newPackageState: '',
         newPackageDeliveryAddress: '',
-        newPackageWeightDeliveryPerson: '',
+        newPackageDeliveryPerson: '',
     }
 
     $scope.oldRegForCarEdit = '';

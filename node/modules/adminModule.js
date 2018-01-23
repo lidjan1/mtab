@@ -28,12 +28,13 @@ exports.adminHandlers = function (socket, userType) {
         } else {
             console.log( 'Adding new package...',response);
             var packageObj = {
+                id : '',
                 Value: response.newPackageValue,
                 Size: response.newPackageSize,
                 Weight: response.newPackageWeight,
                 State: 'waiting for courier',
                 Delivery_Address: response.newPackageDeliveryAddress,
-                Delivery_Person: response.newPackageWeightDeliveryPerson,
+                Delivery_Person: response.newPackageDeliveryPerson,
             };
             repo.CRUD.create('package', packageObj, function (dbResponse) {
                 var dataObj = {
