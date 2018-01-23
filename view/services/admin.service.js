@@ -11,7 +11,16 @@ app.service('adminService', function() {
         console.log(data);
         socket.emit('deleteCar', data);
     };
+    var addNewPackage = function (data) {
+        console.log(data);
+        socket.emit('addNewPackage', data);
+    }
 
+    var subscribeOnAddNewPackage = function (callback) {
+        socket.on('addNewPackage', function (result) {
+           callback(result);
+        });
+    };
 
     var subscribeOnAdminGetData = function (callback) {
         socket.on('adminGetData', function (result) {
@@ -38,9 +47,11 @@ app.service('adminService', function() {
     };
 
     return {
+        addNewPackage: addNewPackage,
         addNewCar: addNewCar,
         editCar: editCar,
         deleteCar: deleteCar,
+        subscribeOnAddNewPackage: subscribeOnAddNewPackage,
         subscribeOnAdminGetData: subscribeOnAdminGetData,
         subscribeOnAddNewCar: subscribeOnAddNewCar,
         subscribeOnEditCar: subscribeOnEditCar,

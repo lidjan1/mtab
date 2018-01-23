@@ -1,4 +1,4 @@
-var repo = require('./repo');
+    var repo = require('./repo');
 
 exports.adminHandlers = function (socket, userType) {
     socket.on('addNewCar', function (response) {
@@ -18,6 +18,29 @@ exports.adminHandlers = function (socket, userType) {
                     car: carObj
                 };
                 socket.emit('addNewCar', dataObj);
+            });
+        }
+    });
+
+    socket.on('addNewPackage' , function (response) {
+        if(userType != 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            console.log( 'Adding new package...',response);
+            var packageObj = {
+                Value: response.newPackageValue,
+                Size: response.newPackageSize,
+                Weight: response.newPackageWeight,
+                State: 'waiting for courier',
+                Delivery_Address: response.newPackageDeliveryAddress,
+                Delivery_Person: response.newPackageWeightDeliveryPerson,
+            };
+            repo.CRUD.create('package', packageObj, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    package: packageObj
+                };
+                socket.emit('addNewPackage', dataObj);
             });
         }
     });

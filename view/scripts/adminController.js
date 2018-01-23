@@ -38,6 +38,15 @@ app.controller('adminController', function($scope, adminService) {
         newCarCondition: 'good',
         newCarType: ''
     };
+    $scope.newPackage = {
+        newPackageWeight: '',
+        newPackageValue: '',
+        newPackageSize: '',
+        newPackageState: '',
+        newPackageDeliveryAddress: '',
+        newPackageWeightDeliveryPerson: '',
+    }
+
     $scope.oldRegForCarEdit = '';
     $scope.addNewCar = function () {
         adminService.addNewCar($scope.newCar);
@@ -68,10 +77,28 @@ app.controller('adminController', function($scope, adminService) {
         };
         adminService.editCar(car);
     };
+
+    $scope.addNewPackage = function () {
+        adminService.addNewPackage($scope.newPackage);
+        document.getElementById('addNewPackageWeight').value = '';
+        document.getElementById('addNewPackageValue').value = '';
+        document.getElementById('addNewPackageSize').value = '';
+        document.getElementById('addNewPackageDeliveryAddress').value = '';
+        document.getElementById('addNewPackageDeliveryPerson').value = '';
+    }
+
     $scope.deleteCar = function () {
         var reg = document.getElementById('editCarReg').value;
         adminService.deleteCar(reg);
     };
+
+    adminService.subscribeOnAddNewPackage( function (result) {
+        if (result.response) {
+            $scope.adminData.packageData.push(result.package);
+            $scope.$apply();
+        }
+    });
+
     adminService.subscribeOnAdminGetData(function (result) {
         $scope.adminData = result;
         $scope.$apply();
