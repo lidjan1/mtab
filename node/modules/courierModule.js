@@ -49,4 +49,20 @@ exports.courierHandlers = function (socket, userType, userID) {
             }, 250);
         }
     });
+    socket.on('editState', function (response) {
+        if(userType !== 'courier' || userID !== response.id){
+            socket.emit('courierGetData', 'You are not logged in as courier!');
+        } else {
+            var setQuery = 'State =' + '\'' + response.package.State + '\'';
+            var whereQuery = 'id =' + '\'' + response.package.id + '\'';
+
+            repo.CRUD.updateWhere('package', setQuery, whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    package: response.package
+                };
+                socket.emit('editState', dataObj);
+            })
+        }
+    });
 };
