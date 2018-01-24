@@ -50,6 +50,7 @@ app.controller('adminController', function($scope, adminService) {
     $scope.oldRegForCarEdit = '';
     $scope.actualState = '';
     $scope.packageId = '';
+    $scope.idOfDeletingPackage;
     $scope.addNewCar = function () {
         adminService.addNewCar($scope.newCar);
         document.getElementById('addNewCarReg').value = '';
@@ -80,6 +81,16 @@ app.controller('adminController', function($scope, adminService) {
         };
         adminService.editCar(car);
     };
+
+    $scope.deleteCar = function () {
+        var reg = document.getElementById('editCarReg').value;
+        adminService.deleteCar(reg);
+    };
+
+    $scope.deletePackage = function () {
+        var id = $scope.packageId
+        adminService.deletePackage(id);
+    }
 
     $scope.editPackage = function () {
         var value = document.getElementById('editPackageValue').value;
@@ -122,10 +133,6 @@ app.controller('adminController', function($scope, adminService) {
         document.getElementById('addNewPackageDeliveryPerson').value = '';
     };
 
-    $scope.deleteCar = function () {
-        var reg = document.getElementById('editCarReg').value;
-        adminService.deleteCar(reg);
-    };
 
     adminService.subscribeOnEditPackage( function (result) {
         if(result.response){
@@ -136,6 +143,19 @@ app.controller('adminController', function($scope, adminService) {
                 }
             }
             $scope.apply();
+        }
+    });
+
+    adminService.subscribeOnDeletePackage( function (result) {
+        if(result.response){
+            for(var i = 0;i<$scope.adminData.packageData.length;i++){
+                if($scope.adminData.packageData[i].id === result.packageId){
+                    $scope.adminData.packageData.splice(i, 1);
+                    break;
+                }
+            }
+            console.log($scope.adminData.packageData);
+            $scope.$apply();
         }
     });
 

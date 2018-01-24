@@ -68,6 +68,23 @@ exports.adminHandlers = function (socket, userType) {
         }
     });
 
+    socket.on('deletePackage', function (response) {
+        if(userType !== 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            console.log('Deleting package...', response);
+            var whereQuery = 'id =' + '\'' + response + '\'';
+
+            repo.CRUD.deleteWhere('package', whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    Old_Reg: response
+                };
+                socket.emit('deletePackage', dataObj);
+            });
+        }
+    });
+
     socket.on('editCar', function (response) {
         if(userType !== 'admin'){
             socket.emit('adminGetData', 'You are not logged in as administrator!');
