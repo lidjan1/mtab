@@ -46,11 +46,20 @@ app.controller('adminController', function($scope, adminService) {
         newPackageDeliveryAddress: '',
         newPackageDeliveryPerson: '',
     }
+    $scope.newUser = {
+        newUserName: '',
+        newUserSurname: '',
+        newUserAddress: '',
+        newUserLogin: '',
+        newUserPassword: '',
+        newUserType: ''
+    }
 
     $scope.oldRegForCarEdit = '';
     $scope.actualState = '';
     $scope.packageId = '';
     $scope.idOfDeletingPackage;
+    $scope.userId = '';
     $scope.addNewCar = function () {
         adminService.addNewCar($scope.newCar);
         document.getElementById('addNewCarReg').value = '';
@@ -87,8 +96,52 @@ app.controller('adminController', function($scope, adminService) {
         adminService.deleteCar(reg);
     };
 
+    $scope.editUser = function () {
+        var name = document.getElementById('editUserName').value;
+        var surname = document.getElementById('editUserSurname').value;
+        var address = document.getElementById('editUserAddress').value;
+        var received = document.getElementById('editUserPackagesReceived').value;
+        var log = document.getElementById('editUserLogin').value;
+        var pass = document.getElementById('editUserPassword').value;
+        var user = {
+            id : $scope.userId,
+            Name : name,
+            Surname : surname,
+            Adress : address,
+            Packages_received : received,
+            login : log,
+            password : pass
+        }
+        adminService.editUser(user);
+    }
+
+    $scope.addNewUser= function () {
+        adminService.addNewUser($scope.newUser);
+        document.getElementById('addNewUserName').value = '';
+        document.getElementById('addNewUserSurname').value = '';
+        document.getElementById('addNewUserAddress').value = '';
+        document.getElementById('addNewUserType').value = 'client';
+        document.getElementById('addNewUserLogin').value = '';
+        document.getElementById('addNewUserPassword').value = '';
+    };
+
+    $scope.prepareModalEditUser = function (user) {
+        $scope.userId = user.id;
+        document.getElementById('editUserName').value = user.Name;
+        document.getElementById('editUserSurname').value = user.Surname;
+        document.getElementById('editUserAddress').value = user.Adress;
+        document.getElementById('editUserPackagesReceived').value = user.Packages_received;
+        document.getElementById('editUserLogin').value = user.login;
+        document.getElementById('editUserPassword').value = user.password;
+    };
+
+    $scope.deleteUser = function () {
+        var id = $scope.userId;
+        adminService.deleteUser(id);
+    }
+
     $scope.deletePackage = function () {
-        var id = $scope.packageId
+        var id = $scope.packageId;
         adminService.deletePackage(id);
     }
 
@@ -132,6 +185,38 @@ app.controller('adminController', function($scope, adminService) {
         document.getElementById('addNewPackageDeliveryAddress').value = '';
         document.getElementById('addNewPackageDeliveryPerson').value = '';
     };
+
+    adminService.subscribeOnAddNewUser( function (result) {
+        if (result.response) {
+            $scope.adminData.userData.push(result.user);
+            $scope.$apply();
+        }
+    })
+
+    adminService.subscribeOnEditUser( function (result) {
+        if(result.response){
+            for(var i = 0;i<$scope.adminData.userData.length;i++){
+                if($scope.adminData.packageData[i].id == result.userId){
+                    $scope.adminData.packageData[i] = result.user;
+                    break;
+                }
+            }
+            $scope.apply();
+        }
+    });
+
+    adminService.subscribeOnDeleteUser( function (result) {
+        if(result.response){
+            for(var i = 0;i<$scope.adminData.userData.length;i++){
+                if($scope.adminData.userData[i].id === result.userId){
+                    $scope.adminData.userData.splice(i, 1);
+                    break;
+                }
+            }
+            console.log($scope.adminData.userData);
+            $scope.$apply();
+        }
+    });
 
 
     adminService.subscribeOnEditPackage( function (result) {

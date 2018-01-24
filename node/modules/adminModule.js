@@ -22,6 +22,107 @@ exports.adminHandlers = function (socket, userType) {
         }
     });
 
+    socket.on('addNewUser', function (response) {
+        if(userType != 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            console.log( 'Adding new user...',response);
+
+            var type = response.newUserType;
+
+            var UserObj = {
+                id : '',
+                user_type: type,
+                login: response.newUserLogin,
+                password : response.newUserPassword
+            }
+
+
+            repo.CRUD.create('users', UserObj, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    package: UserObj
+                };
+            });
+
+            var usersData;
+            repo.CRUD.read('users', function (response) {
+                usersData = response;
+            });
+            console.log(usersData);
+
+            var UserObj = {
+                id : '',
+                Name: response.newUserName,
+                Surname: response.newUserSurname,
+                Adress: response.newUserAddress,
+                Packages_received: 0
+            };
+
+            var workerObj = {
+                id:'',
+                Name: response.newUserName,
+                Surname: response.newUserSurname
+            }
+            console.log(workerObj);
+            if ( type == 'client'){
+                repo.CRUD.create('clients', UserObj, function (dbResponse) {
+                    var dataObj = {
+                        response: dbResponse,
+                        package: UserObj
+                    };
+                    socket.emit('addNewUser', dataObj);
+                });
+            } else if ( type == 'manager'){
+                repo.CRUD.create('managers', workerObj, function (dbResponse) {
+                    var dataObj = {
+                        response: dbResponse,
+                        package: workerObj
+                    };
+                    socket.emit('addNewUser', dataObj);
+                });
+            } else if ( type == 'courier'){
+                repo.CRUD.create('couriers', workerObj, function (dbResponse) {
+                    var dataObj = {
+                        response: dbResponse,
+                        package: workerObj
+                    };
+                    socket.emit('addNewUser', dataObj);
+                });
+            } else {
+                repo.CRUD.create('administrators', workerObj, function (dbResponse) {
+                    var dataObj = {
+                        response: dbResponse,
+                        package: workerObj
+                    };
+                    socket.emit('addNewUser', dataObj);
+                });
+            }
+        }
+    })
+
+    socket.on('deleteUser', function (response) {
+        if(userType !== 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            console.log('Deleting user...', response);
+            var whereQuery = 'id =' + '\'' + response + '\'';
+            repo.CRUD.deleteWhere('users', whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    Old_Reg: response
+                };
+            });
+            repo.CRUD.deleteWhere('users', whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    Old_Reg: response
+                };
+                socket.emit('deleteUser', dataObj);
+            });
+        }
+    });
+
     socket.on('addNewPackage' , function (response) {
         if(userType != 'admin'){
             socket.emit('adminGetData', 'You are not logged in as administrator!');

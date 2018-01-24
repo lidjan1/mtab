@@ -15,6 +15,7 @@
     </nav>
     <div class="container">
         <div id="usersLayout" ng-if="usersLayout" class="jumbotron">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewUser">Dodaj nowego użytkownika</button>
             <h3>Klienci</h3>
             <table class="table table-hover table-dark">
                 <thead>
@@ -26,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr style="cursor:pointer;" ng-repeat="user in adminData.clientsData">
+                <tr style="cursor:pointer;" ng-repeat="user in adminData.clientsData" data-ng-click="prepareModalEditUser(User)" data-toggle="modal" data-target="#editUser">>
                     <th scope="row">{{user.id}}</th>
                     <td>{{user.Name}}</td>
                     <td>{{user.Surname}}</td>
@@ -76,6 +77,145 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="modal fade" id="addNewUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-target="#addNewUser" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="UserModalLabel">Dodawanie nowego użytkownika</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="addNewUserName">Imię:</label>
+                                <input type="text" class="form-control" id="addNewUserName" placeholder="np. Jan" ng-model="newUser.newUserName">
+                            </div>
+                            <div class="form-group">
+                                <label for="addNewUserSurname">Nazwisko:</label>
+                                <input type="text" class="form-control" id="addNewUserSurname" placeholder="np. Kowalski" ng-model="newUser.newUserSurname">
+                            </div>
+                            <div class="form-group">
+                                <label for="addNewUserAddress">Adres:</label>
+                                <input type="text" class="form-control" id="addNewUserAddress" placeholder="np. Miodowa 14" ng-model="newUser.newUserAddress">
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" id="addNewUserType" ng-model="newUser.newUserType">
+                                    <option selected>client</option>
+                                    <option>manager</option>
+                                    <option>admin</option>
+                                    <option>courier</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="addNewUserLogin">Login:</label>
+                                <input type="text" class="form-control" id="addNewUserLogin" placeholder="np. fajnyLogin" ng-model="newUser.newUserLogin">
+                            </div>
+                            <div class="form-group">
+                                <label for="addNewUserPassword">hasło:</label>
+                                <input type="text" class="form-control" id="addNewUserPassword" placeholder="np. tajnehasło" ng-model="newUser.newUserPassword">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="addNewUser()">Dodaj</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="exampleEditPackageModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleEditUserModalLabel">Edycja użytkownika</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="editUserName">Imię:</label>
+                            <input type="text" class="form-control" id="editUserName" placeholder="np. Jan" >
+                        </div>
+                        <div class="form-group">
+                            <label for="editUserSurname">Nazwisko:</label>
+                            <input type="text" class="form-control" id="editUserSurname" placeholder="np. Kowalski">
+                        </div>
+                        <div class="form-group">
+                            <label for="editUserAddress">Adres:</label>
+                            <input type="text" class="form-control" id="editUserAddress" placeholder="np. Miodowa 41" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editUserPackagesReceived">Ilość otrzymanych paczek:</label>
+                            <input type="text" class="form-control" id="editUserPackagesReceived" placeholder="np. 5" >
+                        </div>
+                        <div class="form-group">
+                            <select class="custom-select" id="editUserType" >
+                                <option selected>client</option>
+                                <option>manager</option>
+                                <option>admin</option>
+                                <option>courier</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editUserLogin">Login:</label>
+                            <input type="text" class="form-control" id="editUserLogin" placeholder="np. fajnyLogin" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editUserPassword">hasło:</label>
+                            <input type="text" class="form-control" id="editUserPassword" placeholder="np. tajnehasło" >
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="editUser()">Edytuj</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" data-ng-click="deleteUser()">Usuń</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editWorker" tabindex="-1" role="dialog" aria-labelledby="exampleEditPackageModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleEditWorkerModalLabel">Edycja użytkownika</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="editWorkerName">Imię:</label>
+                            <input type="text" class="form-control" id="editWorkerName" placeholder="np. Jan" >
+                        </div>
+                        <div class="form-group">
+                            <label for="editWorkerSurname">Nazwisko:</label>
+                            <input type="text" class="form-control" id="editWorkerSurname" placeholder="np. Kowalski">
+                        </div>
+                        <div class="form-group">
+                            <select class="custom-select" id="editWorkerType" >
+                                <option selected>client</option>
+                                <option>manager</option>
+                                <option>admin</option>
+                                <option>courier</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editWorkerLogin">Login:</label>
+                            <input type="text" class="form-control" id="editWorkerLogin" placeholder="np. fajnyLogin" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editWorkerPassword">hasło:</label>
+                            <input type="text" class="form-control" id="editWorkerPassword" placeholder="np. tajnehasło" >
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="editUser()">Edytuj</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" data-ng-click="deleteUser()">Usuń</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="carsLayout" ng-if="carsLayout" class="jumbotron">
@@ -194,6 +334,7 @@
             </table>
         </div>
 
+
         <div id="packagesLayout" ng-if="packagesLayout" class="jumbotron">
             <h3>Paczki</h3>
             <table class="table table-hover table-dark">
@@ -304,8 +445,8 @@
                         </div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewPackage">Dodaj nową paczkę</button>
                 </div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewPackage">Dodaj nową paczkę</button>
         </div>
     </div>
 </div>

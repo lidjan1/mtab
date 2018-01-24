@@ -11,6 +11,21 @@ app.service('adminService', function() {
         console.log(data);
         socket.emit('deleteCar', data);
     };
+
+    var addNewUser = function (data) {
+        console.log(data);
+        socket.emit('addNewUser',data);
+    }
+
+    var editUser = function (data) {
+        console.log(data);
+        socket.emit('editUser', data);
+    }
+
+    var deleteUser = function (data) {
+        console.log(data);
+        socket.emit('deleteUser',data);
+    }
     var addNewPackage = function (data) {
         console.log(data);
         socket.emit('addNewPackage', data);
@@ -24,7 +39,25 @@ app.service('adminService', function() {
         console.log(data);
         socket.emit('editPackage', data);
     }
-    
+
+    var subscribeOnEditUser = function (callback) {
+        socket.on('editPackage', function (result) {
+            callback(result);
+        })
+    }
+
+    var subscribeOnAddNewUser = function (callback) {
+        socket.on('addNewUser', function (result) {
+            callback(result);
+        });
+    };
+
+    var subscribeOnDeleteUser= function (callback) {
+        socket.on('deleteUser', function (result) {
+            callback(result);
+        });
+    };
+
     var subscribeOnEditPackage = function (callback) {
         socket.on('editPackage', function (result) {
             callback(result);
@@ -68,12 +101,18 @@ app.service('adminService', function() {
     }
 
     return {
+        addNewUser : addNewUser,
+        editUser : editUser,
+        deleteUser : deleteUser,
         deletePackage: deletePackage,
         editPackage: editPackage,
         addNewPackage: addNewPackage,
         addNewCar: addNewCar,
         editCar: editCar,
         deleteCar: deleteCar,
+        subscribeOnAddNewUser : subscribeOnAddNewUser,
+        subscribeOnEditUser : subscribeOnEditUser,
+        subscribeOnDeleteUser : subscribeOnDeleteUser,
         subscribeOnDeletePackage : subscribeOnDeletePackage,
         subscribeOnEditPackage: subscribeOnEditPackage,
         subscribeOnAddNewPackage: subscribeOnAddNewPackage,

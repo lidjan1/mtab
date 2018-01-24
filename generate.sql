@@ -75,7 +75,7 @@ CREATE TABLE `packages_in_car` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
- `id` int NOT NULL,
+ `id` int AUTO_INCREMENT NOT NULL,
  `user_type` enum('client','manager','admin', 'courier') NOT NULL,
  `login` varchar(255) NOT NULL,
  `password` varchar(255) NOT NULL,
