@@ -1,4 +1,8 @@
 app.service('adminService', function() {
+    var editOrder = function (data) {
+        console.log(data);
+        socket.emit('editOrder', data);
+    };
     var addNewCar = function (data) {
         console.log(data);
         socket.emit('addNewCar', data);
@@ -14,16 +18,16 @@ app.service('adminService', function() {
     var addNewPackage = function (data) {
         console.log(data);
         socket.emit('addNewPackage', data);
-    }
+    };
     var deletePackage = function (data) {
         console.log(data);
-        socket.emit('deletePackage',data);
-    }
+        socket.emit('deletePackage', data);
+    };
     
     var editPackage = function (data) {
         console.log(data);
         socket.emit('editPackage', data);
-    }
+    };
     
     var subscribeOnEditPackage = function (callback) {
         socket.on('editPackage', function (result) {
@@ -65,7 +69,13 @@ app.service('adminService', function() {
         socket.on('deletePackage', function (result) {
             callback(result);
         })
-    }
+    };
+
+    var subscribeOnEditOrder = function (callback) {
+        socket.on('editOrder', function (result) {
+            callback(result);
+        });
+    };
 
     return {
         deletePackage: deletePackage,
@@ -74,12 +84,14 @@ app.service('adminService', function() {
         addNewCar: addNewCar,
         editCar: editCar,
         deleteCar: deleteCar,
+        editOrder: editOrder,
         subscribeOnDeletePackage : subscribeOnDeletePackage,
         subscribeOnEditPackage: subscribeOnEditPackage,
         subscribeOnAddNewPackage: subscribeOnAddNewPackage,
         subscribeOnAdminGetData: subscribeOnAdminGetData,
         subscribeOnAddNewCar: subscribeOnAddNewCar,
         subscribeOnEditCar: subscribeOnEditCar,
-        subscribeOnDeleteCar: subscribeOnDeleteCar
+        subscribeOnDeleteCar: subscribeOnDeleteCar,
+        subscribeOnEditOrder: subscribeOnEditOrder
     };
 });
