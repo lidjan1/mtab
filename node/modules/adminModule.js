@@ -45,6 +45,29 @@ exports.adminHandlers = function (socket, userType) {
             });
         }
     });
+
+    socket.on('editPackage', function (response) {
+        if(userType !== 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            var setQuery = 'Weight =' + '\'' + response.Weight + '\','+
+                'Value =' + '\'' + response.Value+ '\',' +
+                'Size =' + '\'' + response.Size+ '\',' +
+                'State =' + '\'' + response.State+ '\',' +
+                'Delivery_Address =' + '\'' + response.Delivery_Address+ '\',' +
+                'Delivery_Person =' + '\'' + response.Delivery_Person+ '\'';
+
+            var whereQuery = 'id =' + '\'' + response.id + '\'';
+            repo.CRUD.updateWhere('package', setQuery, whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    package: response
+                };
+                socket.emit('editPackage', dataObj);
+            });
+        }
+    });
+
     socket.on('editCar', function (response) {
         if(userType !== 'admin'){
             socket.emit('adminGetData', 'You are not logged in as administrator!');

@@ -48,6 +48,8 @@ app.controller('adminController', function($scope, adminService) {
     }
 
     $scope.oldRegForCarEdit = '';
+    $scope.actualState = '';
+    $scope.packageId = '';
     $scope.addNewCar = function () {
         adminService.addNewCar($scope.newCar);
         document.getElementById('addNewCarReg').value = '';
@@ -58,6 +60,7 @@ app.controller('adminController', function($scope, adminService) {
     $scope.prepareModalEditCar = function (car) {
         console.log(car);
         $scope.oldRegForCarEdit = car.Registration_number;
+        $scope.packageId = package.id;
         document.getElementById('editCarReg').value = car.Registration_number;
         document.getElementById('editCarYear').value = car.Year_of_production;
         document.getElementById('editCarCondition').value = car.Technical_condition;
@@ -78,6 +81,38 @@ app.controller('adminController', function($scope, adminService) {
         adminService.editCar(car);
     };
 
+    $scope.editPackage = function () {
+        var value = document.getElementById('editPackageValue').value;
+        var weight = document.getElementById('editPackageWeight').value;
+        var size = document.getElementById('editPackageSize').value;
+        var state = document.getElementById('editPackageState').value;
+        var deliveryAddress = document.getElementById('editPackageDeliveryAddress').value;
+        var deliveryPerson = document.getElementById('editPackageDeliveryPerson').value;
+        var package = {
+            id : $scope.packageId,
+            Value : value,
+            Weight : weight,
+            Size : size,
+            State : state,
+            Delivery_Address : deliveryAddress,
+            Delivery_Person : deliveryPerson,
+            Actual_State: $scope.actualState
+        }
+        adminService.editPackage(package);
+    };
+
+    $scope.prepareModalEditPackage = function (package) {
+        console.log(package);
+        $scope.actualState = package.State;
+        $scope.packageId = package.id;
+        document.getElementById('editPackageValue').value = package.Value;
+        document.getElementById('editPackageSize').value = package.Size;
+        document.getElementById('editPackageWeight').value = package.Weight;
+        document.getElementById('editPackageState').value = package.State;
+        document.getElementById('editPackageDeliveryPerson').value = package.Delivery_Person;
+        document.getElementById('editPackageDeliveryAddress').value = package.Delivery_Address;
+    };
+
     $scope.addNewPackage = function () {
         adminService.addNewPackage($scope.newPackage);
         document.getElementById('addNewPackageWeight').value = '';
@@ -85,12 +120,24 @@ app.controller('adminController', function($scope, adminService) {
         document.getElementById('addNewPackageSize').value = '';
         document.getElementById('addNewPackageDeliveryAddress').value = '';
         document.getElementById('addNewPackageDeliveryPerson').value = '';
-    }
+    };
 
     $scope.deleteCar = function () {
         var reg = document.getElementById('editCarReg').value;
         adminService.deleteCar(reg);
     };
+
+    adminService.subscribeOnEditPackage( function (result) {
+        if(result.response){
+            for(var i = 0;i<$scope.adminData.packageData.length;i++){
+                if($scope.adminData.packageData[i].id == result.id){
+                    $scope.adminData.packageData[i] = result.package;
+                    break;
+                }
+            }
+            $scope.apply();
+        }
+    });
 
     adminService.subscribeOnAddNewPackage( function (result) {
         if (result.response) {
