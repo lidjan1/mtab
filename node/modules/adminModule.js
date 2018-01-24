@@ -1,6 +1,26 @@
-    var repo = require('./repo');
+var repo = require('./repo');
 
 exports.adminHandlers = function (socket, userType) {
+    socket.on('editOrder', function (response) {
+        if(userType !== 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            var setQuery = 'Package_id =' + '\'' + response.order.Package_id + '\', ' +
+                'Client_id =' + '\'' + response.order.Client_id + '\', ' +
+                'Courier_id =' + '\'' + response.order.Courier_id + '\'';
+
+            var whereQuery = 'Package_id =' + '\'' + response.oldOrder.Package_id + '\'';
+
+            repo.CRUD.updateWhere('orders', setQuery, whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    order: response.order
+                };
+                socket.emit('editOrder', dataObj);
+            });
+        }
+    });
+
     socket.on('addNewCar', function (response) {
         if(userType !== 'admin'){
             socket.emit('adminGetData', 'You are not logged in as administrator!');

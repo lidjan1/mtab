@@ -4,6 +4,24 @@ app.controller('adminController', function($scope, adminService) {
     $scope.carsLayout = false;
     $scope.ordersLayout = false;
     $scope.packagesLayout = false;
+    $scope.oldOrder = {};
+    $scope.prepareModalEditOrder = function (order) {
+        $scope.oldOrder = order;
+        document.getElementById('editOrderClientId').value = order.Client_id;
+        document.getElementById('editOrderCourierId').value = order.Courier_id;
+    };
+    $scope.editOrder = function () {
+        var newClientId = document.getElementById('editOrderClientId').value;
+        var newCourierId = document.getElementById('editOrderCourierId').value;
+
+        var newOrder = {
+            Package_id: $scope.oldOrder.Package_id,
+            Client_id: newClientId,
+            Courier_id: newCourierId
+        };
+
+        adminService.editOrder({order: newOrder, oldOrder: $scope.oldOrder})
+    };
     $scope.setLayout = function (layout) {
         switch (layout){
             case 'users':
@@ -161,7 +179,7 @@ app.controller('adminController', function($scope, adminService) {
             Delivery_Address : deliveryAddress,
             Delivery_Person : deliveryPerson,
             Actual_State: $scope.actualState
-        }
+        };
         adminService.editPackage(package);
     };
 
@@ -185,6 +203,7 @@ app.controller('adminController', function($scope, adminService) {
         document.getElementById('addNewPackageDeliveryAddress').value = '';
         document.getElementById('addNewPackageDeliveryPerson').value = '';
     };
+
 
     adminService.subscribeOnAddNewUser( function (result) {
         if (result.response) {
@@ -219,6 +238,20 @@ app.controller('adminController', function($scope, adminService) {
     });
 
 
+    adminService.subscribeOnEditOrder(function (result) {
+        console.log(result);
+        if(result.response){
+            for(var i = 0;i<$scope.adminData.ordersData.length;i++){
+                if($scope.adminData.ordersData[i].Package_id == result.order.Package_id){
+                    $scope.adminData.ordersData[i] = result.order;
+                    break;
+                }
+            }
+            console.log($scope.adminData.ordersData);
+            $scope.$apply();
+        }
+    });
+
     adminService.subscribeOnEditPackage( function (result) {
         if(result.response){
             for(var i = 0;i<$scope.adminData.packageData.length;i++){
@@ -227,7 +260,7 @@ app.controller('adminController', function($scope, adminService) {
                     break;
                 }
             }
-            $scope.apply();
+            $scope.$apply();
         }
     });
 

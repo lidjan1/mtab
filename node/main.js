@@ -5,6 +5,7 @@ var io = require('socket.io')(app);
 var adminModule = require('./modules/adminModule');
 var clientModule = require('./modules/clientModule');
 var courierModule = require('./modules/courierModule');
+var managerModule = require('./modules/managerModule');
 
 app.listen(81);
 
@@ -33,6 +34,7 @@ repo.initConnection('db', function () {
                              break;
                          case 'manager':
                              table = 'managers';
+                             managerModule.managerHandlers(socket, userType, response.id);
                              break;
                      }
                      repo.CRUD.readWhere(table, 'id='  + '\'' + response.id + '\'', function (moreInfoResponse) {
