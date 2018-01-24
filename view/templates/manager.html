@@ -1,11 +1,151 @@
-<div class="container" ng-controller="employeeController">
+<div class="container" ng-controller="managerController">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">Panel Menadżera</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarManagerLayout" aria-controls="navbarManagerLayout" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarManagerLayout">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="" data-ng-click="setManagerLayout('orders')">Zarządzaj przesyłkami</a>
+                <a class="nav-item nav-link" href="" data-ng-click="setManagerLayout('cars')">Zarządzaj samochodami</a>
+            </div>
+        </div>
+    </nav>
     <div class="jumbotron">
-        <h1 class="display-4">Hello, {{userInfo.name}}!</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-        <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-        </p>
+        <h1 class="display-4">Witaj {{managerData.userData.Name}} {{managerData.userData.Surname}}!</h1>
+        <div id="carsLayout" ng-if="layoutMyCars" class="jumbotron">
+            <h3>Pojazdy</h3>
+            <table class="table table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Numer rejestracyjny</th>
+                    <th scope="col">Rok produkcji</th>
+                    <th scope="col">Stan auta</th>
+                    <th scope="col">Marka</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="car in managerData.carsData">
+                    <th scope="row">{{car.Registration_number}}</th>
+                    <td>{{car.Year_of_production}}</td>
+                    <td>{{car.Technical_condition}}</td>
+                    <td>{{car.Type}}</td>
+                    <td><button class="btn btn-primary" data-ng-click="prepareModalCarState(car)" data-toggle="modal" data-target="#editCarState">Zmien stan pojazdu</button></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" id="editCarState" tabindex="-1" role="dialog" aria-labelledby="exampleEditCarStateModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleEditCarStateModalLabel">Zmień status</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="editCarStatusSelector">Nowy status pojazdu:</label>
+                                <select class="custom-select" id="editCarStatusSelector">
+                                    <option>good</option>
+                                    <option>broken</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="editCarStatus()">Aktualizuj status</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="managerMyOrders" ng-if="layoutMyOrders" class="jumbotron">
+            <h3>Przesyłki czekające na przypisanie</h3>
+            <table class="table table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Dane nadawcy</th>
+                    <th scope="col">Waga</th>
+                    <th scope="col">Cena</th>
+                    <th scope="col">Rozmiar</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Adres odbiorcy</th>
+                    <th scope="col">Dane odbiorcy</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="cursor:pointer;" ng-repeat="package in notStartedPackages" data-ng-click="" data-toggle="modal" data-target="">
+                    <th scope="row">{{package.id}}</th>
+                    <td>{{package.Person.Name}} {{package.Person.Surname}} {{package.Person.Adress}}</td>
+                    <td>{{package.Weight}}</td>
+                    <td>{{package.Value}}</td>
+                    <td>{{package.Size}}</td>
+                    <td>{{package.State}}</td>
+                    <td>{{package.Delivery_Address}}</td>
+                    <td>{{package.Delivery_Person}}</td>
+                    <td><button class="btn btn-primary" data-ng-click="prepareModalEditCourier(package.id)" data-toggle="modal" data-target="#editCourier">Przypisz paczke</button></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" id="editCourier" tabindex="-1" role="dialog" aria-labelledby="exampleEditCourierModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleEditCourierModalLabel">Przypisz paczkę</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="editCourierSelector">Wybierz kuriera:</label>
+                                <select class="custom-select" id="editCourierSelector">
+                                    <option ng-repeat="courier in managerData.couriersData">{{courier.Name}} {{courier.Surname}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="selectCourier()">Zatwierdź</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <h3>Przesyłki przypisane</h3>
+            <table class="table table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Waga</th>
+                    <th scope="col">Cena</th>
+                    <th scope="col">Rozmiar</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Adres odbiorcy</th>
+                    <th scope="col">Dane odbiorcy</th>
+                    <th scope="col">Dane kuriera</th>
+                    <th scope="col">Dane nadawcy</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="cursor:pointer;" ng-repeat="package in startedPackages" data-ng-click="" data-toggle="modal" data-target="">
+                    <th scope="row">{{package.id}}</th>
+                    <td>{{package.Weight}}</td>
+                    <td>{{package.Value}}</td>
+                    <td>{{package.Size}}</td>
+                    <td>{{package.State}}</td>
+                    <td>{{package.Delivery_Address}}</td>
+                    <td>{{package.Delivery_Person}}</td>
+                    <td>{{package.Courier}}</td>
+                    <td>{{package.Person}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
