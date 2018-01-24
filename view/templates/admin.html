@@ -27,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr style="cursor:pointer;" ng-repeat="user in adminData.clientsData" data-ng-click="prepareModalEditUser(User)" data-toggle="modal" data-target="#editUser">>
+                <tr style="cursor:pointer;" ng-repeat="user in adminData.clientsData" data-ng-click="prepareModalEditUser(user)" data-toggle="modal" data-target="#editUser">>
                     <th scope="row">{{user.id}}</th>
                     <td>{{user.Name}}</td>
                     <td>{{user.Surname}}</td>

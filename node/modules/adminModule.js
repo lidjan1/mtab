@@ -55,7 +55,7 @@ exports.adminHandlers = function (socket, userType) {
                 user_type: type,
                 login: response.newUserLogin,
                 password : response.newUserPassword
-            }
+            };
 
 
             repo.CRUD.create('users', UserObj, function (dbResponse) {
@@ -63,61 +63,64 @@ exports.adminHandlers = function (socket, userType) {
                     response: dbResponse,
                     package: UserObj
                 };
+                var usersData;
+                var whereQuery = 'login='  + '\'' + response.newUserLogin + '\'';
+                repo.CRUD.readWhere('users', whereQuery, function (response2) {
+                    usersData = response2[0];
+                    var ClientsObj = {
+                        id : usersData.id,
+                        Name: response.newUserName,
+                        Surname: response.newUserSurname,
+                        Adress: response.newUserAddress,
+                        Packages_received: 0
+                    };
+
+                    var workerObj = {
+                        id: usersData.id,
+                        Name: response.newUserName,
+                        Surname: response.newUserSurname
+                    };
+                    console.log(workerObj);
+                    if ( type == 'client'){
+                        repo.CRUD.create('clients', ClientsObj, function (dbResponse) {
+                            var dataObj = {
+                                response: dbResponse,
+                                user: UserObj,
+                                client: ClientsObj
+                            };
+                            socket.emit('addNewUser', dataObj);
+                        });
+                    } else if ( type == 'manager'){
+                        repo.CRUD.create('managers', workerObj, function (dbResponse) {
+                            var dataObj = {
+                                response: dbResponse,
+                                user: UserObj,
+                                manager: workerObj
+                            };
+                            socket.emit('addNewUser', dataObj);
+                        });
+                    } else if ( type == 'courier'){
+                        repo.CRUD.create('couriers', workerObj, function (dbResponse) {
+                            var dataObj = {
+                                response: dbResponse,
+                                user: UserObj,
+                                courier: workerObj
+                            };
+                            socket.emit('addNewUser', dataObj);
+                        });
+                    } else {
+                        repo.CRUD.create('administrators', workerObj, function (dbResponse) {
+                            var dataObj = {
+                                response: dbResponse,
+                                package: workerObj
+                            };
+                            socket.emit('addNewUser', dataObj);
+                        });
+                    }
+                });
+                console.log(usersData);
             });
 
-            var usersData;
-            repo.CRUD.read('users', function (response) {
-                usersData = response;
-            });
-            console.log(usersData);
-
-            var UserObj = {
-                id : '',
-                Name: response.newUserName,
-                Surname: response.newUserSurname,
-                Adress: response.newUserAddress,
-                Packages_received: 0
-            };
-
-            var workerObj = {
-                id:'',
-                Name: response.newUserName,
-                Surname: response.newUserSurname
-            }
-            console.log(workerObj);
-            if ( type == 'client'){
-                repo.CRUD.create('clients', UserObj, function (dbResponse) {
-                    var dataObj = {
-                        response: dbResponse,
-                        package: UserObj
-                    };
-                    socket.emit('addNewUser', dataObj);
-                });
-            } else if ( type == 'manager'){
-                repo.CRUD.create('managers', workerObj, function (dbResponse) {
-                    var dataObj = {
-                        response: dbResponse,
-                        package: workerObj
-                    };
-                    socket.emit('addNewUser', dataObj);
-                });
-            } else if ( type == 'courier'){
-                repo.CRUD.create('couriers', workerObj, function (dbResponse) {
-                    var dataObj = {
-                        response: dbResponse,
-                        package: workerObj
-                    };
-                    socket.emit('addNewUser', dataObj);
-                });
-            } else {
-                repo.CRUD.create('administrators', workerObj, function (dbResponse) {
-                    var dataObj = {
-                        response: dbResponse,
-                        package: workerObj
-                    };
-                    socket.emit('addNewUser', dataObj);
-                });
-            }
         }
     })
 
@@ -130,13 +133,13 @@ exports.adminHandlers = function (socket, userType) {
             repo.CRUD.deleteWhere('users', whereQuery, function (dbResponse) {
                 var dataObj = {
                     response: dbResponse,
-                    Old_Reg: response
+                    userId: response
                 };
             });
-            repo.CRUD.deleteWhere('users', whereQuery, function (dbResponse) {
+            repo.CRUD.deleteWhere('clients', whereQuery, function (dbResponse) {
                 var dataObj = {
                     response: dbResponse,
-                    Old_Reg: response
+                    userId: response
                 };
                 socket.emit('deleteUser', dataObj);
             });

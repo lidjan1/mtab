@@ -45,7 +45,7 @@ app.service('adminService', function() {
     };
 
     var subscribeOnEditUser = function (callback) {
-        socket.on('editPackage', function (result) {
+        socket.on('editUser', function (result) {
             callback(result);
         })
     }

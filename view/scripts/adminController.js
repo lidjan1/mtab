@@ -207,32 +207,61 @@ app.controller('adminController', function($scope, adminService) {
 
     adminService.subscribeOnAddNewUser( function (result) {
         if (result.response) {
-            $scope.adminData.userData.push(result.user);
+            if(result.client){
+                $scope.adminData.clientsData.push(result.client);
+                result.user.id = result.client.id;
+            } else if (result.courier){
+                $scope.adminData.couriersData.push(result.courier);
+                result.user.id = result.courier.id;
+            } else {
+
+            }
+            $scope.adminData.usersData.push(result.user);
             $scope.$apply();
         }
     })
 
     adminService.subscribeOnEditUser( function (result) {
+        console.log(result);
         if(result.response){
-            for(var i = 0;i<$scope.adminData.userData.length;i++){
-                if($scope.adminData.packageData[i].id == result.userId){
-                    $scope.adminData.packageData[i] = result.user;
-                    break;
+            if(result.client){
+                for(var i = 0;i<$scope.adminData.usersData.length;i++){
+                    if($scope.adminData.usersData[i].id == result.client.id){
+                        result.user.id = result.client.id;
+                        $scope.adminData.usersData[i] = result.user;
+                        break;
+                    }
                 }
+                for(var i = 0;i<$scope.adminData.clientsData.length;i++){
+                    if($scope.adminData.clientsData[i].id == result.client.id){
+                        $scope.adminData.clientsData[i] = result.client;
+                        break;
+                    }
+                }
+                $scope.apply();
+            } else if (result.courier){
+
+            } else if (result.manager) {
+
             }
-            $scope.apply();
+
         }
     });
 
     adminService.subscribeOnDeleteUser( function (result) {
         if(result.response){
-            for(var i = 0;i<$scope.adminData.userData.length;i++){
-                if($scope.adminData.userData[i].id === result.userId){
-                    $scope.adminData.userData.splice(i, 1);
-                    break;
+            for(var i = 0;i<$scope.adminData.usersData.length;i++){
+                if($scope.adminData.usersData[i].id === result.userId){
+                    $scope.adminData.usersData.splice(i, 1);
                 }
             }
-            console.log($scope.adminData.userData);
+            for(i = 0;i<$scope.adminData.clientsData.length;i++){
+                if($scope.adminData.clientsData[i].id === result.userId){
+                    $scope.adminData.clientsData.splice(i, 1);
+                }
+            }
+
+            console.log($scope.adminData.usersData);
             $scope.$apply();
         }
     });
