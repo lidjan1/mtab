@@ -6,7 +6,7 @@ var globalDb = null;
 exports.initConnection = function (dbName, callback) {
     var connectionData = {
         ip: 'localhost',
-        user: 'root',
+        user: 'aaa',
         pass: ''
     };
 

@@ -1,4 +1,4 @@
-var repo = require('./repo');
+    var repo = require('./repo');
 
 exports.adminHandlers = function (socket, userType) {
     socket.on('addNewCar', function (response) {
@@ -21,6 +21,70 @@ exports.adminHandlers = function (socket, userType) {
             });
         }
     });
+
+    socket.on('addNewPackage' , function (response) {
+        if(userType != 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            console.log( 'Adding new package...',response);
+            var packageObj = {
+                id : '',
+                Value: response.newPackageValue,
+                Size: response.newPackageSize,
+                Weight: response.newPackageWeight,
+                State: 'waiting for courier',
+                Delivery_Address: response.newPackageDeliveryAddress,
+                Delivery_Person: response.newPackageDeliveryPerson,
+            };
+            repo.CRUD.create('package', packageObj, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    package: packageObj
+                };
+                socket.emit('addNewPackage', dataObj);
+            });
+        }
+    });
+
+    socket.on('editPackage', function (response) {
+        if(userType !== 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            var setQuery = 'Weight =' + '\'' + response.Weight + '\','+
+                'Value =' + '\'' + response.Value+ '\',' +
+                'Size =' + '\'' + response.Size+ '\',' +
+                'State =' + '\'' + response.State+ '\',' +
+                'Delivery_Address =' + '\'' + response.Delivery_Address+ '\',' +
+                'Delivery_Person =' + '\'' + response.Delivery_Person+ '\'';
+
+            var whereQuery = 'id =' + '\'' + response.id + '\'';
+            repo.CRUD.updateWhere('package', setQuery, whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    package: response
+                };
+                socket.emit('editPackage', dataObj);
+            });
+        }
+    });
+
+    socket.on('deletePackage', function (response) {
+        if(userType !== 'admin'){
+            socket.emit('adminGetData', 'You are not logged in as administrator!');
+        } else {
+            console.log('Deleting package...', response);
+            var whereQuery = 'id =' + '\'' + response + '\'';
+
+            repo.CRUD.deleteWhere('package', whereQuery, function (dbResponse) {
+                var dataObj = {
+                    response: dbResponse,
+                    Old_Reg: response
+                };
+                socket.emit('deletePackage', dataObj);
+            });
+        }
+    });
+
     socket.on('editCar', function (response) {
         if(userType !== 'admin'){
             socket.emit('adminGetData', 'You are not logged in as administrator!');

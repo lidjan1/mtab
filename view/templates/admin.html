@@ -209,7 +209,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr style="cursor:pointer;" ng-repeat="package in adminData.packageData">
+                <tr style="cursor:pointer;" ng-repeat="package in adminData.packageData" data-ng-click="prepareModalEditPackage(package)" data-toggle="modal" data-target="#editPackage">
                     <th scope="row">{{package.id}}</th>
                     <td>{{package.Weight}}</td>
                     <td>{{package.Value}}</td>
@@ -220,7 +220,92 @@
                 </tr>
                 </tbody>
             </table>
+                <div class="modal fade" id="addNewPackage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="PackageModalLabel">Dodawanie nowej paczki</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="addNewPackageWeight">Waga:</label>
+                                    <input type="text" class="form-control" id="addNewPackageWeight" placeholder="np. 100" ng-model="newPackage.newPackageWeight">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addNewPackageValue">Wartość:</label>
+                                    <input type="text" class="form-control" id="addNewPackageValue" placeholder="np. 34" ng-model="newPackage.newPackageValue">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addNewPackageSize">Rozmiar:</label>
+                                    <input type="text" class="form-control" id="addNewPackageSize" placeholder="np. 50" ng-model="newPackage.newPackageSize">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addNewPackageDeliveryAddress">Adres Odbiorcy:</label>
+                                    <input type="text" class="form-control" id="addNewPackageDeliveryAddress" placeholder="np. Złota 87" ng-model="newPackage.newPackageDeliveryAddress">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addNewPackageDeliveryPerson">Imię i Nazwisko Adresata:</label>
+                                    <input type="text" class="form-control" id="addNewPackageDeliveryPerson" placeholder="np. Jan Kowalski" ng-model="newPackage.newPackageDeliveryPerson">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="addNewPackage()">Dodaj</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="editPackage" tabindex="-1" role="dialog" aria-labelledby="exampleEditPackageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleEditPackageModalLabel">Edycja paczki</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPackageWeight">Waga:</label>
+                                <input type="text" class="form-control" id="editPackageWeight" placeholder="np. 100" >
+                            </div>
+                            <div class="form-group">
+                                <label for="editPackageValue">Wartość:</label>
+                                <input type="text" class="form-control" id="editPackageValue" placeholder="np. 34">
+                            </div>
+                            <div class="form-group">
+                                <label for="editPackageSize">Rozmiar:</label>
+                                <input type="text" class="form-control" id="editPackageSize" placeholder="np. 50" >
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select" id="editPackageState">
+                                    <option selected>taken_from_client</option>
+                                    <option>in magazine</option>
+                                    <option>waiting for courier</option>
+                                    <option>in_delivery</option>
+                                    <option>delivered</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPackageDeliveryAddress">Adres Odbiorcy:</label>
+                                <input type="text" class="form-control" id="editPackageDeliveryAddress" placeholder="np. Złota 87" >
+                            </div>
+                            <div class="form-group">
+                                <label for="editPackageDeliveryPerson">Imię i Nazwisko Adresata:</label>
+                                <input type="text" class="form-control" id="editPackageDeliveryPerson" placeholder="np. Jan Kowalski" >
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="editPackage()">Edytuj</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" data-ng-click="deletePackage()">Usuń</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewPackage">Dodaj nową paczkę</button>
         </div>
-
     </div>
 </div>
